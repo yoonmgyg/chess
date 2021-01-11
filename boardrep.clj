@@ -3,6 +3,7 @@
     	    [clojure.edn :as edn]
     	    [clojure.pprint :as pp]))
 
+;converts char to int
 (defn char-to-int [ch]
   (- (int ch) 97))
 
@@ -10,12 +11,21 @@
 (defn exp [x n]
   (if (zero? n) 1
     (* x (exp x (dec n)))))
-    
-(defn notation-to-bin [notation]
+
+
+;converts chess notation to 64 bit integer    
+(defn notation-to-int [notation]
   (if (> (count notation) 2)
     (println notation " is greater than 2 characters.")
     (exp 2 (+ (char-to-int (char (subs notation 0 1)))
-      	      (* 8 (int (char (subs notation 1 2))))))))
-      
+      	      (* 8 (int (subs notation 1 2))))))))
+
+(defn bin-to-board [bin]
+  (let [board (apply str (reverse bin))]
+  
+  
+;converts notation to bitmap
 (defn notation-to-board [& notation]
-  (map #(notation-to-bin %) notation)
+  (bin-to-board Integer/toBinaryString (reduce + (map #(notation-to-int %) notation))))
+    
+(defn king-moves [notation])
